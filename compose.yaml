@@ -1,4 +1,4 @@
-version: "2"
+version: "3"
 services:
   node:
     container_name: "openelec"
@@ -9,6 +9,6 @@ services:
       - NODE_ENV=production
     volumes:
       - ./:/home/node/app
-    expose:
-      - "80"
+    ports:
+      - "80:80"
     command: "node server.js"
