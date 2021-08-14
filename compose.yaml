@@ -1,0 +1,14 @@
+version: "2"
+services:
+  node:
+    container_name: "openelec"
+    image: "node"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./:/home/node/app
+    expose:
+      - "80"
+    command: "node server.js"
