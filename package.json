@@ -1,0 +1,10 @@
+{
+    "name": "openelec",
+    "dependencies": {
+        "express": "latest",
+        "mongodb": "latest"
+    },
+    "scripts": {
+
+    }
+}

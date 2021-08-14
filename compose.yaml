@@ -1,14 +1,21 @@
 version: "3"
 services:
   node:
-    container_name: "openelec"
-    image: "node"
+    container_name: "node"
     user: "node"
-    working_dir: /home/node/app
+    build: "."
+    command: "node server.js"
     environment:
       - NODE_ENV=production
-    volumes:
-      - ./:/home/node/app
     ports:
       - "80:80"
-    command: "node server.js"
+  mongo:
+    container_name: "mongo"
+    image: "mongo"
+    environment: 
+      MONGO_INITDB_ROOT_USERNAME: "openelec"
+      MONGO_INITDB_ROOT_PASSWORD: "password"
+    volumes: 
+      - ./mongo/:/etc/mongo
+    expose:
+      - "27017"
