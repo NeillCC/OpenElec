@@ -8,32 +8,26 @@ const { MongoClient } = require("mongodb");
 const PORT = 80;
 const HOST = '0.0.0.0';
 var connectionCounter = 0;
-var sqlUsr = "openelec";
-var sqlPass = "password";
-const uri = "mongodb+srv://localhsot:27017/?poolSize=20&writeConcern=majority";
+// var sqlUsr = "openelec";
+// var sqlPass = "password";
+//const uri = "mongodb+srv://localhsot:27017/?poolSize=20&writeConcern=majority";
 
-async function run() {
-  try {
-    // Connect the client to the server
-    await client.connect();
-    // Establish and verify connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Connected successfully to server");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
+function clientConnect() {
+  connectionCounter = connectionCounter + 1;
+  console.log("Connection " + connectionCounter);
 }
-run().catch(console.dir);
-
 // App
 const app = express();
 app.get('/', (req, res) => {
-  connectionCounter++;
-  res.send('Hello World');
-  console.log(connectionCounter);
-  var client = new MongoClient(uri);
-
+  res.set({
+    'StatusCode': '200',
+    'StatusDescription': 'OK',
+    'Content-Type': 'text/plain',
+    'ConnectionCount': connectionCounter,
+    'Content': 'Hello World'
+  });
+  res.send();
+  clientConnect();
 });
 
 app.listen(PORT, HOST);
