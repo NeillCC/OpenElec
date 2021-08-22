@@ -2,7 +2,7 @@
     "name": "openelec",
     "dependencies": {
         "express": "latest",
-        "mongodb": "latest"
+        "mongoose": "latest"
     },
     "scripts": {
 
