@@ -1,10 +1,13 @@
 {
     "name": "openelec",
+    "description": "Open Source Home Control API",
+    "repository": {},
+    "license": "",
     "dependencies": {
         "express": "latest",
-        "mongoose": "latest"
+        "mongoose": "latest",
+        "uuid": "latest"
     },
-    "scripts": {
-
-    }
+    "type": "module",
+    "scripts": {}
 }
