@@ -1,27 +1,26 @@
-'use strict';
 import express from 'express';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv'
 import { v4 as uuid } from 'uuid';
-import './resources/mongooseSchema.js';
-
+import { User , Device } from './resources/mongooseSchema.js';
+dotenv.config()
 //#region Constants
 const app = express();
-//const mongoose = mongoose.connect
-const PORT = 80;
-const HOST = '0.0.0.0';
-const sqlServer = 'cluster0.dc4xm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
-const sqlUsr = 'openelec';
-const sqlPass = '';
-const sqlDB = 'openelec'
-const sqlPort = '27017'
-const sqlUri = 'mongodb+srv://' + sqlUsr  + ':' + sqlPass + '@' + sqlServer;
+const PORT = process.env.WEBSERVER_LISTENPORT;
+const HOST = process.env.WEBSERVER_LISTENADDR;
+const sqlUri = process.env.DATABASE_PROTOCOL + 
+'://' + process.env.DATABASE_USER + ':' + 
+process.env.DATABASE_PASSWORD + '@' + process.env.DATABASE_DNS + 
+'/' + process.env.DATABASE_DNS_ARGS;
 //#endregion
 //#region Vars
 var connectionCounter = 0;
+var apiVersions = ['v1']
 //#endregion
 
 //#region Functions
 function startWebServer() {
+  app.use(express.json());
   app.listen(PORT, HOST);
   console.log(`Running on http://${HOST}:${PORT}`);
 }
@@ -33,7 +32,7 @@ function goodHTTPConnection(req, res) {
   res.set({
     'StatusCode': '200',
     'StatusDescription': 'OK',
-    'Content-Type': 'text/plain',
+    'Content-Type': 'application/json',
     'ConnectionCount': connectionCounter,
     'Content': 'Hello World'
   });
@@ -44,7 +43,7 @@ function goodHTTPConnection(req, res) {
 //#region  API
 app.get('/api/', (req, res) => {
   res = goodHTTPConnection(req, res);
-  res.set({APIVersions: ['v1']});
+  res.set({APIVersions: apiVersions});
   res.send();
 });
 app.get('/api/v1/users', (req, res) => {
@@ -54,15 +53,16 @@ app.get('/api/v1/users', (req, res) => {
 });
 app.post('/api/v1/users', (req,res) => {
   res = goodHTTPConnection(req, res);
-  const users = new Users({
-    guid: uuid,
-    email: req.email,
-    passwordHash: req.passwordHash
-  });
-  users.save()
-  .then(res.set(result))
-  .catch(console.log(err));
-  //send email verification
+  //TODO this needs handling for invalid input. UnhandledPromiseRejectionWarning
+  // let user = new User({
+  //   email: req.header.email,
+  //   passwordHash: req.header.passwordHash
+  // });
+  // user.save()
+  // .then(res.set(user))
+  // .catch(console.log(err));
+  res.set(req.header.email);
+  //TODO send email verification
   //
   res.send();
 
@@ -70,7 +70,7 @@ app.post('/api/v1/users', (req,res) => {
 //#endregion
 //#region Main
 mongoose.connect(sqlUri, {useNewUrlParser: true, useUnifiedTopology: true})
-.then(console.log('Connected to sql server: '+sqlServer))
+.then(console.log('Connected to sql server: ' + process.env.DATABASE_DNS + ' as ' + process.env.DATABASE_USER))
 .then(startWebServer())
 .catch((err) => console.log(err));
 //#endregion
