@@ -1,10 +1,14 @@
 import mongoose from 'mongoose';
+import { v4 as uuid } from 'uuid';
 const Schema = mongoose.Schema;
+function newUUID() {
+	return uuid();
+} 
 //#region Users Schema
 const usersSchema = new Schema({
 	"guid": {
 		"type": "String",
-		"required": "true"
+		"get": newUUID
 	},
 	"email": {
 		"type": "String",
@@ -16,11 +20,11 @@ const usersSchema = new Schema({
 	},
 	"devices": {
 		"type": "Array",
-		"required": "true"
+		"required": "false"
 	},
 	"emailVerified": {
 		"type": "Boolean",
-		"required": "false"
+		"default": "false"
 	}
 });
 const User = mongoose.model('User', usersSchema);
