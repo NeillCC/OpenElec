@@ -9,5 +9,12 @@
         "uuid": "latest"
     },
     "type": "module",
-    "scripts": {}
+    "scripts": {
+        "devStart": "nodemon --verbose server.js",
+        "start": "node server.js"
+    },
+    "devDependencies": {
+        "dotenv": "^10.0.0",
+        "nodemon": "^2.0.12"
+    }
 }
