@@ -39,6 +39,7 @@ function goodHTTPConnection(req, res) {
   clientConnect(req);
   return res;
 }
+//test
 //#endregion
 //#region  API
 app.get('/api/', (req, res) => {
