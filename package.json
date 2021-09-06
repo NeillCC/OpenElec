@@ -1,10 +1,20 @@
 {
     "name": "openelec",
+    "description": "Open Source Home Control API",
+    "repository": {},
+    "license": "",
     "dependencies": {
         "express": "latest",
-        "mongodb": "latest"
+        "mongoose": "latest",
+        "uuid": "latest"
     },
+    "type": "module",
     "scripts": {
-
+        "devStart": "nodemon --verbose server.js",
+        "start": "node server.js"
+    },
+    "devDependencies": {
+        "dotenv": "^10.0.0",
+        "nodemon": "^2.0.12"
     }
 }

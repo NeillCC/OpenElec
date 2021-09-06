@@ -1,4 +1,6 @@
 FROM node
 WORKDIR /home/node/app
-COPY *.js* ./
+COPY * ./
+# COPY models ./
+# COPY node_modules ./
 RUN npm install
